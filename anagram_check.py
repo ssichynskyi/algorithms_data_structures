@@ -1,7 +1,9 @@
 #!usr/bin/python
 # -*- coding: utf-8 -*-
 import argparse
-import time
+
+from helpers.execution_timer import measure
+
 
 """ ANAGRAM CHECK
 Problem:
@@ -25,28 +27,19 @@ def solution(first, second, solution_number):
         2: is_anagram_two,
         3: is_anagram_three
     }
-    # prepare strings and do initial check
     print(rf'Given strings: "{first}" and "{second}"')
-    start_time = time.time_ns()
-    print(start_time)
+    # prepare strings
     try:
         first, second = _prepare_strings(first, second)
     except TypeError as e:
         print(str(e))
     except ValueError as e:
         print(str(e))
-    if solution_switch[solution_number](first, second):
+    result = measure(solution_switch[solution_number], first, second)
+    if result:
         print('These solutions are anagrams!')
     else:
         print('These solutions are NOT anagrams')
-    end_time = time.time_ns()
-    print(end_time)
-    # this is a custom modification for my laptop setup
-    delta = end_time - start_time
-    if delta <= 0:
-        print(f'Execution have taken < 1 ms')
-    else:
-        print(f'Execution have taken {delta // 1000000} ms')
     return
 
 

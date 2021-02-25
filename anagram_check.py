@@ -3,7 +3,7 @@
 import argparse
 
 from helpers.execution_timer import measure
-
+from typing import Tuple
 
 """ ANAGRAM CHECK
 Problem:
@@ -21,7 +21,19 @@ Usage:
 """
 
 
-def solution(first, second, solution_number):
+def solution(first: str, second: str, solution_number: int) -> None:
+    """ Runs the program that determines if two given strings are anagrams
+    and measures the execution time using one of 3 solutions
+
+    Args:
+        first - first string
+        second - second string
+        solution_number -
+
+    Returns:
+        prints the result and execution time into console
+
+    """
     solution_switch = {
         1: is_anagram_one,
         2: is_anagram_two,
@@ -43,7 +55,7 @@ def solution(first, second, solution_number):
     return
 
 
-def _prepare_strings(*strings):
+def _prepare_strings(*strings) -> Tuple[str]:
     """ Does sanitation of the given strings as parameters:
     - removing spaces
     - change all upper-case to lower-case
@@ -56,6 +68,7 @@ def _prepare_strings(*strings):
 
     Raises:
         TypeError if not strings or has zero length
+
     """
     result = []
     for string in strings:
@@ -68,7 +81,7 @@ def _prepare_strings(*strings):
     return tuple(result)
 
 
-def _size_pre_check(*strings):
+def _size_pre_check(*strings) -> bool:
     """ Checks if given strings have the same number of elements
 
     Args:
@@ -78,16 +91,23 @@ def _size_pre_check(*strings):
         True if all strings passed as params have the same number of elements
         False in other case
 
+    Raises:
+        ValueError if arguments is not a list of strings
+
     """
-    length = len(strings[0])
+    length = None
     for string in strings:
-        # although there is unnecessary comparison, this maybe faster and more good-looking then alternatives
-        if len(string) != length:
-            return False
+        if not isinstance(string, str):
+            raise ValueError(f'Expected strings as arguments! {type(string)} is given')
+        if length is None:
+            length = len(string)
+        else:
+            if len(string) != length:
+                return False
     return True
 
 
-def is_anagram_one(first, second):
+def is_anagram_one(first: str, second: str) -> bool:
     """ First variant of solution if two strings are anagrams.
     For every symbol in first string find and remove it's occurrence in the second.
 
@@ -111,7 +131,7 @@ def is_anagram_one(first, second):
     return True
 
 
-def is_anagram_two(first, second):
+def is_anagram_two(first: str, second: str) -> bool:
     """ Second variant of solution if two strings are anagrams.
     Sort and compare lists of symbols
 
@@ -133,7 +153,7 @@ def is_anagram_two(first, second):
     return False
 
 
-def is_anagram_three(first, second):
+def is_anagram_three(first: str, second: str) -> bool:
     """ Second variant of solution if two strings are anagrams
     Hashing and counting symbols
 

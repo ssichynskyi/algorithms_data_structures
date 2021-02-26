@@ -11,11 +11,9 @@ class IllegalPopAttemptException(Exception):
 
 
 class Stack:
-    """ Custom implementation of a stack data structure
-
-    """
+    """ Custom implementation of a stack data structure """
     def __init__(self, basis=None):
-        """ Creates the object of a
+        """ Creates the object of a stack type
 
         Args:
              basis: a list which shall be the basis for created stack

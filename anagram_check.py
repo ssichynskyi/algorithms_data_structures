@@ -28,7 +28,7 @@ def solution(first: str, second: str, solution_number: int) -> None:
     Args:
         first - first string
         second - second string
-        solution_number -
+        solution_number - [1..3] selector of the problem solution
 
     Returns:
         prints the result and execution time into console
@@ -154,8 +154,8 @@ def is_anagram_two(first: str, second: str) -> bool:
 
 
 def is_anagram_three(first: str, second: str) -> bool:
-    """ Second variant of solution if two strings are anagrams
-    Hashing and counting symbols
+    """ Second variant of solution if two strings are anagrams.
+    Counting symbols while hashing them
 
     Args:
         first - first given string

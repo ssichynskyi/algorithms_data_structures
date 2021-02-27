@@ -26,3 +26,21 @@ def measure(func, *args, time_measurement_function=time.perf_counter_ns, **kwarg
     else:
         print(f'Execution have taken {delta / 10E+06} ms')
     return result
+
+
+def get_execution_time(func, *args, time_measurement_function=time.perf_counter_ns, **kwargs):
+    """ Executes the given function with params, measures and returns the execution time
+
+    Args:
+        func - function that shall be executed
+        args - tuple of params for func
+        time_measurement_function - function that shall be used for time measurement
+
+    Returns:
+        result, time required for the execution of function
+
+    """
+    start_time = time_measurement_function()
+    result = func(*args, **kwargs)
+    end_time = time_measurement_function()
+    return result, end_time - start_time

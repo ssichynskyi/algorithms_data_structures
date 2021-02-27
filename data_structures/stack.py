@@ -59,9 +59,9 @@ class StackConstTimeMaxEl(Stack):
         self._max_value_stack.__init__()
         if basis is not None:
             for element in basis:
-                self.update_max_value_stack(element)
+                self._update_max_value_stack(element)
 
-    def update_max_value_stack(self, item) -> None:
+    def _update_max_value_stack(self, item) -> None:
         if self._max_value_stack.is_empty():
             self._max_value_stack.push(item)
         else:
@@ -69,7 +69,7 @@ class StackConstTimeMaxEl(Stack):
                 self._max_value_stack.push(item)
 
     def push(self, item) -> None:
-        self.update_max_value_stack(item)
+        self._update_max_value_stack(item)
         super().push(item)
 
     def pop(self):

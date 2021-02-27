@@ -1,5 +1,8 @@
 from unittest import TestCase
+
 from data_structures.stack import StackConstTimeMaxEl, IllegalPopAttemptException
+from helpers.randomized_arrays import get_random_array_of_ints
+from helpers.execution_timer import get_execution_time
 
 
 class TestStackConstTimeMaxEl(TestCase):
@@ -69,3 +72,15 @@ class TestStackConstTimeMaxEl(TestCase):
         test_stack.pop()
         # [1] [1]
         self.assertEqual(test_stack.get_max(), 1)
+
+    def test_amortization(self):
+        test_stack = StackConstTimeMaxEl()
+        for element in get_random_array_of_ints(100000, -10000, 10000):
+            test_stack.push(element)
+        result, time_hundred_thousand = get_execution_time(test_stack.get_max)
+        for element in get_random_array_of_ints(100, -10000, 10000):
+            test_stack.push(element)
+        result, time_hundred = get_execution_time(test_stack.get_max)
+        print(time_hundred)
+        print(time_hundred_thousand)
+        self.assertTrue(time_hundred_thousand/time_hundred < 30.0)

@@ -6,6 +6,8 @@ A collection of various tasks for algorithms and data structures
 - finding unique pairs of integers in array which sum is equal to a given number
 
 ## Stacks and Queues
+- stack with O(1) time to get max value
+- queue with O(1) time to get max value
 
 ## Graphs
 

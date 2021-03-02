@@ -51,9 +51,9 @@ def binary_search_recursive(sorted_list, searched_item, lower=None, upper=None) 
     if upper == lower:
         return None
     if searched_item > sorted_list[index]:
-        return binary_search_recursive(sorted_list, searched_item, lower=index+1, upper=upper)
+        return binary_search_recursive(sorted_list, searched_item, lower=index + 1, upper=upper)
     else:
-        return binary_search_recursive(sorted_list, searched_item, lower=lower, upper=upper-1)
+        return binary_search_recursive(sorted_list, searched_item, lower=lower, upper=upper - 1)
 
 
 def bubble_sort(array) -> None:
@@ -180,6 +180,9 @@ def shell_sort(array: list) -> None:
         implemented here is the binary one (not the most effective though)
         Time complexity varies from O(n*log(n)) to O(n*(log(n))^2) for optimized modifications
         Which makes it quite an effective algorithm from those that has O(1) memory complexity
+        Although this implementation looks as if it has high time complexity because of 4 nested loops,
+        it provides the expected performance of ~ n*log(n). According to measurements the execution time
+        is increased by factor ~ 230 when n is increased 100 times.
 
     Args:
         array: array to sort
@@ -220,59 +223,6 @@ def shell_sort(array: list) -> None:
                         than array[j], it makes no sense to proceed
                         """
                         break
-        distance //= 2
-
-
-def shell_sort_2(array: list) -> None:
-    """Implements the shell sorting algorithm ver.2.
-
-    This is copied from the internet and improved solution.
-    Improvement is not related to performance, just readability and simplicity
-
-    Idea:
-        it's similar to insertion sort, but with the feature of
-        selecting several sub-arrays (sorted)
-        "Sub-array" is just a virtual array of elements that has the same distance
-        between their indexes.
-        For example: [15, 26, 71, 1, 16, 83, 42, 29] with increment == 3 will select
-        following virtual arrays and sort them:
-        1: [15, 1, 42]
-        2: [26, 16, 29]
-        3: [71, 83]
-        Then it will exchange their positions like if these small lists are sorted:
-        1: [1, 15, 42]
-        2: [16, 26, 29]
-        3: [71, 83]
-        So, the end list will look like:
-        [1, 16, 71, 15, 26, 83, 42, 29]
-        Next step is to reduce the increment and repeat the process.
-        The last stage is a simple insertion sort
-
-    Note:
-        implemented here is the binary one (not the most effective though)
-        Time complexity varies from O(n*log(n)) to O(n*(log(n))^2) for optimized modifications
-        Which makes it quite an effective algorithm from those that has O(1) memory complexity
-
-    Args:
-        array: array to sort
-
-    Returns:
-        None, changes are done directly in a given array
-
-    """
-
-    max_index = len(array) - 1
-    """int: only for performance improvement. len() is not calculated every time max index is referenced"""
-    distance = len(array) // 2
-    """int: select the distance between elements (use binary although it's not the most effective one)"""
-    while distance >= 1:
-        for i in range(distance, max_index + 1):
-            """add a[i] to the elements that have been sorted by insertion
-            shift earlier sorted elements up until the correct location for a[i] is found
-            """
-            for j in range(i, distance-1, -distance):
-                if array[j] < array[j-distance]:
-                    array[j], array[j-distance] = array[j-distance], array[j]
         distance //= 2
 
 
@@ -367,3 +317,17 @@ def quick_sort(array, start=None, stop=None):
     # execute recursively for the left and right sub-arrays
     quick_sort(array, start=start, stop=max(pivot_index - 1, start))
     quick_sort(array, start=min(pivot_index + 1, stop), stop=stop)
+
+
+from helpers.sorting_checker import check_array_sorted
+from helpers.execution_timer import compare_functions
+from helpers.randomized_arrays import get_random_array_of_ints
+
+
+result = compare_functions(
+    get_random_array_of_ints(int(1e+5), int(-1e+6), int(1e+6)),
+    check_array_sorted,
+    shell_sort, merge_sort, quick_sort
+)
+for key in result:
+    print(f'{key}: Status: {"Fail" if result[key]["Verification"] == False else "OK"} Time: {result[key]["time ms"]}')

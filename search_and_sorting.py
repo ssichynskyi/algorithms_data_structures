@@ -101,9 +101,9 @@ def selection_sort(array) -> None:
         None, changes are done directly in a given array
 
     """
-    max_index = len(array) - 1
+    arr_length = len(array)
     """only for performance improvement. len() is not calculated every time max index is referenced"""
-    for i in range(max_index, 0, -1):
+    for i in range(arr_length, 0, -1):
         max_index = 0
         for k in range(i):
             if array[k] > array[max_index]:
@@ -132,9 +132,9 @@ def insertion_sort(array) -> None:
 
     """
     unsorted_lower_bound = 0
-    max_index = len(array) - 1
+    arr_length = len(array)
     """only for performance improvement. len() is not calculated every time max index is referenced"""
-    for i in range(1, max_index):
+    for i in range(1, arr_length):
         unsorted_lower_bound += 1
         """ stores an starting (smallest) index of the unsorted part of the array """
         # Code block below is not absolutely necessary, it's just for performance improvement
@@ -317,17 +317,3 @@ def quick_sort(array, start=None, stop=None):
     # execute recursively for the left and right sub-arrays
     quick_sort(array, start=start, stop=max(pivot_index - 1, start))
     quick_sort(array, start=min(pivot_index + 1, stop), stop=stop)
-
-
-from helpers.sorting_checker import check_array_sorted
-from helpers.execution_timer import compare_functions
-from helpers.randomized_arrays import get_random_array_of_ints
-
-
-result = compare_functions(
-    get_random_array_of_ints(int(1e+5), int(-1e+6), int(1e+6)),
-    check_array_sorted,
-    shell_sort, merge_sort, quick_sort
-)
-for key in result:
-    print(f'{key}: Status: {"Fail" if result[key]["Verification"] == False else "OK"} Time: {result[key]["time ms"]}')

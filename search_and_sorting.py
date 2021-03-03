@@ -162,7 +162,7 @@ def shell_sort(array: list) -> None:
         selecting several sub-arrays (sorted)
         "Sub-array" is just a virtual array of elements that has the same distance
         between their indexes.
-        For example: [15, 26, 71, 1, 16, 83, 42, 29] with increment == 3 will select
+        For example: [15, 26, 71, 1, 16, 83, 42, 29] with distance == 3 will select
         following virtual arrays and sort them:
         1: [15, 1, 42]
         2: [26, 16, 29]
@@ -173,7 +173,7 @@ def shell_sort(array: list) -> None:
         3: [71, 83]
         So, the end list will look like:
         [1, 16, 71, 15, 26, 83, 42, 29]
-        Next step is to reduce the increment and repeat the process.
+        Next step is to reduce the distance and repeat the process.
         The last stage is a simple insertion sort
 
     Note:
@@ -182,7 +182,8 @@ def shell_sort(array: list) -> None:
         Which makes it quite an effective algorithm from those that has O(1) memory complexity
         Although this implementation looks as if it has high time complexity because of 4 nested loops,
         it provides the expected performance of ~ n*log(n). According to measurements the execution time
-        is increased by factor ~ 230 when n is increased 100 times.
+        is increased by factor ~ 230 when n is increased 100 times. The reason is that all nested loops
+        has time complexity less than O(N), mostly log(N)
 
     Args:
         array: array to sort
@@ -229,26 +230,45 @@ def shell_sort(array: list) -> None:
 def merge_sort(array):
     """Implementation of the merge-sorting algorithm.
 
+    Idea:
+        array is split in two parts recursively until arrays with length == 1 remain.
+        Then they are one-by-one merged in ascending order:
+
+    Example of merge algorithm for 2 arrays, which at this stage are already sorted
+        because the same process was done 1 step ago with [1],[2] and [0],[2]:
+        left_array = [1 , 2], right_array = [0, 2]
+        array = [1 , 2, 0, 2]
+        i - counter for the left array
+        j - counter for the right array
+        k - counter for array
+        i,j,k = 0
+        / Below counter values are showed for the end of the step /
+        1: i = 0, j = 0, k = 0: array = [0, 2, 0, 2], i=0, j=1, k=1
+        2: i = 0, j = 0, k = 0: array = [0, 1, 0, 2], i=1, j=1, k=2
+        3: i = 0, j = 0, k = 0: array = [0, 1, 2, 2], i=1, j=2, k=3
+        4: i = 0, j = 0, k = 0: array = [0, 1, 2, 2], i=1, j=2, k=4
+
     Args:
         array: array to sort
 
     Returns:
         None, changes are done in an input array
+
     """
     if len(array) > 1:
         mid = len(array) // 2
-        # split out array on 2 sub-arrays
         left_array = array[:mid]
         right_array = array[mid:]
+        """split array on 2 sub-arrays"""
 
-        # recursively call merge for all sub-parts
         merge_sort(left_array)
         merge_sort(right_array)
+        """ recursively call merge for all sub-parts """
 
-        # this part will start execution only when the bottom (array with len == 1) is reached
         i, j, k = 0, 0, 0
-        # perform merge of left_array with right_array
+        """code below will start execution only when the bottom (array with len == 1) is reached"""
         while i < len(left_array) and j < len(right_array):
+            """perform merge of left_array with right_array"""
             if left_array[i] < right_array[j]:
                 array[k] = left_array[i]
                 i += 1
@@ -256,64 +276,82 @@ def merge_sort(array):
                 array[k] = right_array[j]
                 j += 1
             k += 1
-        # this cycle ensure that the remaining elements of left_array are also merged into array
+
         while i < len(left_array):
+            """this cycle ensure that the remaining elements of left_array are also merged into array"""
             array[k] = left_array[i]
             i += 1
             k += 1
-        # this cycle ensure that the remaining elements of right_array are also merged into array
+
         while j < len(right_array):
+            """this cycle ensure that the remaining elements of right_array are also merged into array"""
             array[k] = right_array[j]
             j += 1
             k += 1
 
 
 def quick_sort(array, start=None, stop=None):
+    """Implements quick sort algorithm.
+
+    Idea:
+        Recursive, top-down algorithm with typical time performance O(N*log(N))
+        and worst-case performance O(N^2)
+
+        1. Arbitrary pivot element is taken
+        2. In the virtual array that represents initial array minus pivot element
+        we start moving left marker from most left element and right marker from
+        the most right element
+        3. We stop left marker when we find an element with a value greater or equal than pivot
+        4. We stop right marker when we find an element with value less than a pivot
+        5. Once both markers stopped we exchange the elements
+        6. Then we move the pivot value to a point where markers have met.
+        7. Then split parts of the array on left (to a pivot) and right (to a pivot) and apply
+        quick_sort recursively in the same manner.
+
+    Args:
+        array: array to sort
+        start: index of sub-array to start from. Only for recursion. Shall be not given on a first call.
+        stop: index of sub-array to finish at. Shall be not given on a first call
+
+    Returns:
+        None, all changes are done directly in a given array
+
     """
-    Implements quick sort algorithm.
-    The essence of the quicksort is following:
-    1. Arbitrary pivot element is taken
-    2. In the virtual array that represents initial array minus pivot element we start moving left marker
-    from most left element and right marker from most right element
-    3. We stop left marker when we find an element with a value greater or equal than pivot
-    4. We stop right marker when we find an element with value less than a pivot
-    5. Once both markers stopped we exchange the elements
-    6. Then we move the pivot value to a point where markers have met.
-    7. Then split parts of the array on left (to a pivot) and right (to a pivot) and apply quick_sort recursively
-    in the same manner.
-    :param array: array to sort
-    :param start: index of sub-array to start from. Only for recursion. Normally shall be not given on a first call
-    :param stop: index of sub-array to finish at. Normally shall be not given on a first call
-    :return: None, all changes are done directly in a given array
-    """
-    # statements below are used only in the first run
+
     if start is None:
         start = 0
     if stop is None:
         stop = len(array) - 1
-    # if array have len == 1, it's sorted by default. Recursion trivial case.
+    """statements above are used only in the first run"""
+
     if start >= stop:
         return
-    # setting pivot element. By default it's the 0th element of given array / sub-array
+    """if array have len == 1, it's sorted by default. Recursion trivial case."""
+
     pivot_index = start
+    """setting pivot element. By default it's the 0th element of given array / sub-array"""
+
     low_index, high_index = pivot_index + 1, stop
+    """since we select first element as a pivot index, low index is selected as first element above it"""
 
     while high_index > low_index:
-        # searching for the first occurrence of the element on the LEFT, which is GREATER than pivot
+        """searching for the first occurrence of the element on the LEFT, which is GREATER than pivot"""
         while array[low_index] < array[pivot_index] and high_index > low_index:
             low_index += 1
-        # searching backwards for the first occurrence of the element on the RIGHT, which is LOWER than pivot
+        """searching backwards for the first occurrence of the element on the RIGHT, which is LOWER than pivot"""
         while array[high_index] >= array[pivot_index] and high_index > low_index:
             high_index -= 1
         if array[low_index] >= array[pivot_index] > array[high_index]:
             array[low_index], array[high_index] = array[high_index], array[low_index]
-    # insert the pivot element into the right place
+
     if array[low_index] < array[pivot_index]:
         array.insert(low_index, array.pop(pivot_index))
         pivot_index = low_index
     else:
         array.insert(low_index - 1, array.pop(pivot_index))
         pivot_index = low_index - 1
-    # execute recursively for the left and right sub-arrays
+    """above the right place for the pivot element is searched"""
+
     quick_sort(array, start=start, stop=max(pivot_index - 1, start))
     quick_sort(array, start=min(pivot_index + 1, stop), stop=stop)
+    """recursively sort sub-arrays"""

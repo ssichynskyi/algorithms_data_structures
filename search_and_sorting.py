@@ -3,6 +3,14 @@
 from typing import Union
 
 
+class NonIntegerElementInCountingSort(Exception):
+    """ Exception is raised when counting sort is attempted on
+    array containing other values than integers
+    """
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 def binary_search(sorted_list: list, searched_item) -> Union[int, None]:
     """Performs binary search in a given sorted list
 
@@ -355,3 +363,58 @@ def quick_sort(array, start=None, stop=None):
     quick_sort(array, start=start, stop=max(pivot_index - 1, start))
     quick_sort(array, start=min(pivot_index + 1, stop), stop=stop)
     """recursively sort sub-arrays"""
+
+
+def counting_sort(array):
+    """Implements counting sort
+
+    Note:
+        High performance algorithm for sorting integers. Especially effective for
+        large amounts of small integers. Time performance O(n+k+l). Memory O(k+l).
+        Where k and l are the maximum absolute value the max positive and max negative element
+    Args:
+        array: array to be sorted. Must consist of only integer elements
+
+    Returns:
+        None, all changes are done directly in a given array
+
+    """
+    if len(array) == 0:
+        return
+    if array is None:
+        raise ValueError('Array under sorting cannot be None')
+    max_value = max(array)
+    min_value = min(array)
+    """the code above could be slightly optimized by introducing a custom function
+    that will collect max and min values simultaneously
+    """
+    array_of_positives = [0] * (max_value + 1)
+    array_of_negatives = [0] * (-min_value + 1)
+
+    for element in array:
+        if element < 0:
+            try:
+                array_of_negatives[-element] += 1
+            except IndexError:
+                raise NonIntegerElementInCountingSort(
+                    'Counting sort cannot perform on non-integer values'
+                )
+        else:
+            try:
+                array_of_positives[element] += 1
+            except IndexError:
+                raise NonIntegerElementInCountingSort(
+                    'Counting sort cannot perform on non-integer values'
+                )
+    """collect elements into two arrays according to their sign. 0 is considered as positive"""
+
+    current_index = 0
+    for i in range(len(array_of_negatives) - 1, -1, -1):
+        for j in range(array_of_negatives[i]):
+            array[current_index] = -i
+            current_index += 1
+    for i in range(len(array_of_positives)):
+        for j in range(array_of_positives[i]):
+            array[current_index] = i
+            current_index += 1
+    """above for loops reconstructs the array that is already sorted"""

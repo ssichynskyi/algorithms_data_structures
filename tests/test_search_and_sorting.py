@@ -9,17 +9,10 @@ from search_and_sorting import (
     quick_sort,
     insertion_sort,
     shell_sort,
-    merge_sort
+    merge_sort,
+    counting_sort
 )
 
-
-# result = compare_functions(
-#     get_random_array_of_ints(int(1e+5), int(-1e+6), int(1e+6)),
-#     check_array_sorted,
-#     shell_sort, merge_sort, quick_sort
-# )
-# for key in result:
-#     print(f'{key}: Status: {"Fail" if result[key]["Verification"] == False else "OK"} Time: {result[key]["time ms"]}')
 
 class Test(TestCase):
     def setUp(self) -> None:
@@ -28,10 +21,10 @@ class Test(TestCase):
         self.duplicates_of_two_types = [-1, 0, -1, 0, -1]
         self.empty_array = []
         self.test_set = (
-            self.random_test_array,
             self.duplicates_array,
             self.duplicates_of_two_types,
-            self.empty_array
+            self.empty_array,
+            self.random_test_array
         )
 
     def test_bubble_sort(self):
@@ -51,6 +44,9 @@ class Test(TestCase):
 
     def test_quick_sort(self):
         self.generic_test(quick_sort)
+
+    def test_counting_sort(self):
+        self.generic_test(counting_sort)
 
     def generic_test(self, func):
         for array in self.test_set:

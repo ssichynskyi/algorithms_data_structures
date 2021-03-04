@@ -1,8 +1,8 @@
 from unittest import TestCase
 
-from helpers.sorting_checker import check_array_sorted
 from helpers.execution_timer import compare_functions
 from helpers.randomized_arrays import get_random_array_of_ints
+from helpers.sorting_checker import check_array_sorted
 from search_and_sorting import (
     bubble_sort,
     selection_sort,
@@ -10,7 +10,8 @@ from search_and_sorting import (
     insertion_sort,
     shell_sort,
     merge_sort,
-    counting_sort
+    counting_sort,
+    radix_sort
 )
 
 
@@ -25,6 +26,13 @@ class Test(TestCase):
             self.duplicates_of_two_types,
             self.empty_array,
             self.random_test_array
+        )
+        self.sorting_functions = (
+            quick_sort,
+            shell_sort,
+            merge_sort,
+            counting_sort,
+            radix_sort
         )
 
     def test_bubble_sort(self):
@@ -48,8 +56,17 @@ class Test(TestCase):
     def test_counting_sort(self):
         self.generic_test(counting_sort)
 
+    def test_radix_sort(self):
+        self.generic_test(radix_sort)
+
     def generic_test(self, func):
         for array in self.test_set:
             test_array = array.copy()
             func(test_array)
             self.assertTrue(check_array_sorted(test_array))
+
+    def test_performance(self):
+        performance_test_array = get_random_array_of_ints(10000, -10000, 10000)
+        results = compare_functions(performance_test_array, check_array_sorted, *self.sorting_functions)
+        for func_name in results:
+            print(f'{func_name}: {results[func_name]}')

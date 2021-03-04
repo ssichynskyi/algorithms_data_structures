@@ -1,5 +1,6 @@
 #!usr/bin/python
 # -*- coding: utf-8 -*-
+from math import log10
 from typing import Union
 
 
@@ -375,6 +376,9 @@ def counting_sort(array):
     Args:
         array: array to be sorted. Must consist of only integer elements
 
+    Raises:
+        NonIntegerElementInCountingSort
+
     Returns:
         None, all changes are done directly in a given array
 
@@ -418,3 +422,86 @@ def counting_sort(array):
             array[current_index] = i
             current_index += 1
     """above for loops reconstructs the array that is already sorted"""
+
+
+def radix_sort(array: list, max_rank=None, current_rank=None):
+    """Implements radix / bucket sorting algorithm
+
+    Idea:
+        elements are put into buckets according to the value of their
+        MSN/LSN (most/least significant number). There's alternative
+        with bit-by-bit comparison. But since in python bit operations
+        are not very fast, it makes little sense.
+
+    Note:
+        In general, this is a high performance algorithm which works
+        for all kinds of data, which could be lexicographically ordered.
+        This implementation is done only for the list of integers.
+        Time complexity O(n*k) where k is a max number of bits in array
+        elements
+
+    Args:
+        array: array to be sorted.
+        max_rank: max rank of the integer in the array. Shall be None if not known.
+        current_rank: used for recursive calls. Shall be None on initial call
+
+    Returns:
+        None, all changes are done directly in a given array
+        But during recursive calls it does return lists
+
+    """
+    if len(array) <= 1:
+        return array
+    if array is None:
+        raise ValueError('Array under sorting cannot be None')
+
+    # code below is executed not more than one time
+    if max_rank is None:
+        max_value = max(array)
+        min_value = min(array)
+
+        if max_value > 0:
+            rank_of_max = int(log10(max_value))
+        elif max_value < 0:
+            rank_of_max = int(log10(-max_value))
+        else:
+            rank_of_max = 1
+        """get rank / number of digits in max. element of the array"""
+        if min_value > 0:
+            rank_of_min = int(log10(min_value))
+        elif min_value < 0:
+            rank_of_min = int(log10(-min_value))
+        else:
+            rank_of_min = 1
+        """get rank / number of digits in min. element of the array"""
+        max_rank = max(rank_of_min, rank_of_max)
+
+    # Code below is executed only on initial iteration
+    if current_rank is None:
+        current_rank = max_rank
+        array_of_positives = []
+        array_of_negatives = []
+        for element in array:
+            if element >= 0:
+                array_of_positives.append(element)
+            else:
+                array_of_negatives.append(element)
+        array_of_positives = radix_sort(array_of_positives, max_rank, current_rank)
+        array_of_negatives = radix_sort(array_of_negatives, max_rank, current_rank)
+        """below is the place of final exit"""
+        array.clear()
+        array.extend(array_of_negatives[:] + array_of_positives[:])
+        return
+
+    if current_rank > 0:
+        temp_array = [[], [], [], [], [], [], [], [], [], []]
+        for element in array:
+            temp_array[(element // 10 ** current_rank) % 10].append(element)
+        for i in range(len(temp_array)):
+            temp_array[i] = radix_sort(temp_array[i], max_rank=max_rank, current_rank=current_rank-1)
+        # merge sub-lists into list
+        return [element for sub_array in temp_array for element in sub_array]
+    else:
+        # In trivial case the sorting of minimal bucket is done using any other algorithm
+        insertion_sort(array)
+        return array

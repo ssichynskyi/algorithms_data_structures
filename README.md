@@ -5,7 +5,7 @@ A collection of custom implementation of common data-structures, algorithms, and
 - anagram check
 - finding unique pairs of integers in array which sum is equal to a given number
 - check if given string contains only unique characters
-- various sorting algorithms: shell, merge, quick, insertion, selection, bubble
+- various sorting algorithms: shell, merge, quick, heap, insertion, selection, bubble
 
 ## Stacks and Queues
 - stack with O(1) time to get max value

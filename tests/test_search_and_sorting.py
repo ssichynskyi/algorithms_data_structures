@@ -3,7 +3,7 @@ from unittest import TestCase
 from helpers.execution_timer import compare_functions
 from helpers.randomized_arrays import get_random_array_of_ints
 from helpers.sorting_checker import check_array_sorted
-from search_and_sorting import (
+from algorithms.search_and_sorting import (
     bubble_sort,
     selection_sort,
     quick_sort,

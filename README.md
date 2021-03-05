@@ -1,5 +1,5 @@
 # Algorithms and Data Structures
-A collection of various tasks for algorithms and data structures
+A collection of custom implementation of common data-structures, algorithms, and various related tasks
 
 ## Lists, Hash tables, etc
 - anagram check
@@ -10,6 +10,8 @@ A collection of various tasks for algorithms and data structures
 ## Stacks and Queues
 - stack with O(1) time to get max value
 - queue with O(1) time to get max value
+- queue from 2 stacks
+- check parenthesis for balance
 
 ## Graphs
 

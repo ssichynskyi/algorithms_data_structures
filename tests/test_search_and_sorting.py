@@ -11,7 +11,8 @@ from algorithms.search_and_sorting import (
     shell_sort,
     merge_sort,
     counting_sort,
-    radix_sort
+    radix_sort,
+    heap_sort
 )
 
 
@@ -32,7 +33,8 @@ class Test(TestCase):
             shell_sort,
             merge_sort,
             counting_sort,
-            radix_sort
+            radix_sort,
+            heap_sort
         )
 
     def test_bubble_sort(self):
@@ -58,6 +60,9 @@ class Test(TestCase):
 
     def test_radix_sort(self):
         self.generic_test(radix_sort)
+
+    def test_heap_sort(self):
+        self.generic_test(heap_sort)
 
     def generic_test(self, func):
         for array in self.test_set:

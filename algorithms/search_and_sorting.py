@@ -505,3 +505,79 @@ def radix_sort(array: list, max_rank=None, current_rank=None):
         # In trivial case the sorting of minimal bucket is done using any other algorithm
         insertion_sort(array)
         return array
+
+
+def heap_sort(array: list) -> None:
+    """Sorts the array using a binary heap (prioritized queue)
+
+    Note:
+        binary heap is a complete binary tree (filled with no spaces),
+        where nodes below the current have lower (bigger) value.
+        Some data:
+            [14, 12, 10, 8, 5, 9, 4] - is a way to store the BH
+            if current node has index i, then it's leaves (child) node indexes are:
+            left = 2*i + 1
+            right = 2*i + 2
+            The index of the last node with children is therefore = (n - 1s) // 2,
+            where n is the last index of the bin-heap list (e.g. len(array) - 1)
+        This algorithm has a constant time performance N*log(N) and O(1) space performance
+
+    Idea:
+        Take the last node with leaves (children) and apply heapify on it.
+        Heapify is a process of bringing the elements below the current node
+        into the binary heap order (parent node > child nodes)
+        Repeat the process by moving left in the heap array.
+
+    Args:
+        array: array to sort
+
+    Returns:
+        None, all changes are done directly in a given array
+
+    """
+    def heapify(array: list, max_index: int, i: int) -> None:
+        """Self-implemented heapify.
+
+        Note:
+            In a python module heapq there's a full implementation of related functions.
+            So, this is implemented to get better understanding
+
+        Args:
+            array: array to heapify
+            max_index: maximal index of the array that shall be heapified (e.g. stop point)
+            i: the starting index (index of a root element, e.g. starting point)
+
+        Returns:
+            None, changes are done in a provided parameter
+
+        """
+        left_index = 2 * i + 1
+        right_index = 2 * i + 2
+        index_of_min = i
+        if left_index <= max_index and array[left_index] > array[index_of_min]:
+            index_of_min = left_index
+        if right_index <= max_index and array[right_index] > array[index_of_min]:
+            index_of_min = right_index
+        """code above discovers the node which has min value within root, left node, right node"""
+        if index_of_min != i:
+            array[index_of_min], array[i] = array[i], array[index_of_min]
+            """perform similar operation recursively for all children of the moved node"""
+            heapify(array, max_index, index_of_min)
+
+    # Here array is transformed to a binary heap:
+    max_index = len(array) - 1
+    for i in range((max_index - 1) // 2, -1, -1):
+        heapify(array, max_index, i)
+    """above: start from the latest node with leaves and proceed to root node"""
+
+    """At this stage array represents a binary heap. However it's not a sorted list yet.
+    Because bin heap doesn't provide any rule about left node < right node
+    """
+    # Here final sorting is done
+    """The idea of the loop below - to take the smallest element(root) put it to the end and
+    heapify all elements from 0 to max_index - 1. Proceed until the last element.
+    In this case all list is already sorted.
+    """
+    for i in range(max_index, 0, -1):
+        array[i], array[0] = array[0], array[i]
+        heapify(array, i - 1, 0)

@@ -226,3 +226,51 @@ class SinglyLinkedList:
             node = node.next
             counter += 1
         return counter
+
+    def get_node_by_position(self, position: int) -> [SinglyListNode, None]:
+        """Get the node which is positioned "position" times next to head node
+
+        Args:
+            position: number of nodes from head to the requested one
+
+        Returns:
+            Node or None
+
+        """
+        if self.is_linked_list_cycled(self.head):
+            raise IllegalLinkedListOperation('Cannot get node by its position for a cycled list')
+        if not isinstance(position, int) or position < 0:
+            raise ValueError('Position index must be non-negative integer')
+        current_node = self.head
+        counter = 0
+        while counter < position:
+            if current_node.next is None:
+                return None
+            current_node = current_node.next
+            counter += 1
+        return current_node
+
+    def get_node_by_position_reversed(self, position: int) -> [SinglyListNode, None]:
+        """Get the node which is positioned "position" times from the tail node
+
+        Args:
+            position: number of nodes from tail to the requested one
+
+        Returns:
+            Node or None
+
+        """
+        if self.is_linked_list_cycled(self.head):
+            raise IllegalLinkedListOperation('Cannot get node by its position for a cycled list')
+        if not isinstance(position, int) or position < 0:
+            raise ValueError('Position index must be non-negative integer')
+        trailing_pointer = self.head
+        leading_pointer = self.head
+        for _ in range(position):
+            if leading_pointer.next is None:
+                return None
+            leading_pointer = leading_pointer.next
+        while leading_pointer.next is not None:
+            trailing_pointer = trailing_pointer.next
+            leading_pointer = leading_pointer.next
+        return trailing_pointer

@@ -14,6 +14,10 @@ A collection of custom implementation of common data-structures, algorithms, and
 - queue from 2 stacks
 - check parenthesis for balance
 
+## Lined lists:
+- singly linked list
+- doubly linked list
+
 ## Graphs
 
 ## Trees

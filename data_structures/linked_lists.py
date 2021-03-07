@@ -231,7 +231,7 @@ class SinglyLinkedList:
         """Get the node which is positioned "position" times next to head node
 
         Args:
-            position: number of nodes from head to the requested one
+            position: number of nodes from head to the requested one. 0 is head.
 
         Returns:
             Node or None
@@ -254,7 +254,7 @@ class SinglyLinkedList:
         """Get the node which is positioned "position" times from the tail node
 
         Args:
-            position: number of nodes from tail to the requested one
+            position: number of nodes from tail to the requested one. 0 is tail.
 
         Returns:
             Node or None
@@ -274,3 +274,172 @@ class SinglyLinkedList:
             trailing_pointer = trailing_pointer.next
             leading_pointer = leading_pointer.next
         return trailing_pointer
+
+    def insert_on_position(self, value, position: int) -> None:
+        """Creates a node with given value and puts it "position" times to the right of head
+
+        Args:
+            value: the value of the node to be inserted
+            position: distance from the head node
+
+        Returns:
+            None
+
+        """
+        node = SinglyListNode(value)
+        self.insert_node_on_position(node, position)
+
+    def insert_node_on_position(self, node: SinglyListNode, position: int) -> None:
+        """Puts a given node in "position" times to the right of head node
+
+        Args:
+            node: the value of the node to be inserted
+            position: distance from the head node
+
+        Returns:
+            None
+
+        """
+        if position == 0:
+            node.next = self.head
+            self.head = node
+        else:
+            preceding_node = self.get_node_by_position(position - 1)
+            node.next = preceding_node.next
+            preceding_node.next = node
+
+    @staticmethod
+    def slice(start, positions):
+        """Creates a new linked list which is a slice of
+
+        Args:
+            start: starting node
+            positions: number of positions to include in slice
+
+        Returns:
+            linked list which is a slice of a current one
+
+        """
+        # create a slice of a piece containing both sub-lists with preceding element
+        slice_sub_array = SinglyLinkedList()
+        node = start
+        counter = 0
+        while counter < positions and node:
+            slice_sub_array.append(node.value)
+            node = node.next
+            counter += 1
+        return slice_sub_array
+
+    def replace(self, preceding_node, new_node) -> None:
+        """Replace the node which is next to preceding with node
+
+        Args:
+            preceding_node: node that precedes the node which shall be replaced
+            new_node: node to replace the node which is next to preceding
+
+        Returns:
+            None. All changes done in the given list.
+
+        """
+        if preceding_node:
+            node_to_replace = preceding_node.next
+            preceding_node.next = new_node
+        else:
+            node_to_replace = self.head
+            self.head = new_node
+        new_node.next = node_to_replace.next
+
+    def sort(self) -> None:
+        """Use iterative merge sort algorithm to order the elements by value
+
+        Returns:
+            None
+        """
+        length = self.get_length()
+        sub_list_length = 1
+
+        while sub_list_length < length:
+            node_one = self.head
+            pred_node_one = None
+
+            """set markers of sub-lists to their starting positions"""
+            for start_index in range(0, length, sub_list_length * 2):
+
+                """create a slice containing first sub-list with preceding element"""
+                slice_sub_first = SinglyLinkedList.slice(node_one, sub_list_length)
+
+                # pred_node_two = pred_node_one
+                node_two = node_one
+
+                """move markers for second sub-list"""
+                for _ in range(sub_list_length):
+                    # pred_node_two = node_two
+                    if not node_two:
+                        break
+                    node_two = node_two.next
+
+                """create a slice containing second sub-list with preceding element"""
+                slice_sub_second = SinglyLinkedList.slice(node_two, sub_list_length)
+
+                # merge sub-lists
+                """create markers for sub-arrays."""
+                current_node_first_sub_list = slice_sub_first.head
+                current_node_second_sub_list = slice_sub_second.head
+
+                # iterate through the slices and put elements in order
+                while current_node_first_sub_list and current_node_second_sub_list:
+
+                    if current_node_second_sub_list.value < current_node_first_sub_list.value:
+                        # save the value of next because replace changes next
+                        temp = current_node_second_sub_list.next
+                        self.replace(pred_node_one, current_node_second_sub_list)
+                        current_node_second_sub_list = temp
+                    else:
+                        current_node_first_sub_list = current_node_first_sub_list.next
+                        # self.replace(pred_node_one, current_node_first_sub_list)
+
+                    # restore the value of node_one when its detached in case of head node
+                    node_one = pred_node_one.next if pred_node_one else self.head
+                    # move marker to the next position
+                    pred_node_one = node_one
+                    node_one = node_one.next
+
+                """ensure that all remaining elements from first sub-list are merged"""
+                while current_node_first_sub_list:
+                    # save the value of next because replace changes next
+                    temp = current_node_first_sub_list.next
+                    self.replace(pred_node_one, current_node_first_sub_list)
+                    current_node_first_sub_list = temp
+                    pred_node_one = pred_node_one.next
+                    node_one = node_one.next
+
+                """ensure that all remaining elements from first sub-list are merged"""
+                while current_node_second_sub_list:
+                    # save the value of next because replace changes next
+                    temp = current_node_second_sub_list.next
+                    self.replace(pred_node_one, current_node_second_sub_list)
+                    current_node_second_sub_list = temp
+                    pred_node_one = pred_node_one.next
+                    node_one = node_one.next
+
+                # """move markers for first sub-list"""
+                # for _ in range(sub_list_length):
+                #     if not node_one:
+                #         break
+                #     pred_node_one = node_one
+                #     node_one = node_one.next
+
+            sub_list_length *= 2
+
+
+def create_from_list(array: list) -> SinglyLinkedList:
+    linked_list = SinglyLinkedList()
+    for element in array:
+        linked_list.append(element)
+    return linked_list
+
+
+A = [2, 1, 7, 9, 5, 3, 0, 1]
+L = create_from_list(A)
+L.sort()
+print(L.values_to_list())

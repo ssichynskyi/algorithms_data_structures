@@ -17,6 +17,7 @@ A collection of custom implementation of common data-structures, algorithms, and
 ## Lined lists:
 - singly linked list
 - doubly linked list
+- merge sort for SLL
 
 ## Graphs
 

@@ -39,14 +39,14 @@ class SinglyLinkedList:
         - add cycle length measurement (from the point where fast and slow
         markers met, restart the run. Number of iterations before they meet again
         is the length of the cycle
-        - add function to de-cycle the list (make a
-        - find the middle of the list (with 2 markers - fast and slo)
     """
     def __init__(self, head=None):
         """
         Args:
             head: head node of the linked list
         """
+        if head and not isinstance(head, SinglyListNode):
+            raise TypeError(f'Head must be of type SinglyListNode. Given: {type(head)}')
         self.head = head
         self._tail = None
 
@@ -389,14 +389,15 @@ class SinglyLinkedList:
                 # iterate through the slices and put elements in order
                 while current_node_first_sub_list and current_node_second_sub_list:
 
-                    if current_node_second_sub_list.value < current_node_first_sub_list.value:
+                    if current_node_second_sub_list.value <= current_node_first_sub_list.value:
                         # save the value of next because replace changes next
                         temp = current_node_second_sub_list.next
                         self.replace(pred_node_one, current_node_second_sub_list)
                         current_node_second_sub_list = temp
                     else:
-                        current_node_first_sub_list = current_node_first_sub_list.next
-                        # self.replace(pred_node_one, current_node_first_sub_list)
+                        temp = current_node_first_sub_list.next
+                        self.replace(pred_node_one, current_node_first_sub_list)
+                        current_node_first_sub_list = temp
 
                     # restore the value of node_one when its detached in case of head node
                     node_one = pred_node_one.next if pred_node_one else self.head
@@ -422,13 +423,6 @@ class SinglyLinkedList:
                     pred_node_one = pred_node_one.next
                     node_one = node_one.next
 
-                # """move markers for first sub-list"""
-                # for _ in range(sub_list_length):
-                #     if not node_one:
-                #         break
-                #     pred_node_one = node_one
-                #     node_one = node_one.next
-
             sub_list_length *= 2
 
 
@@ -437,9 +431,3 @@ def create_from_list(array: list) -> SinglyLinkedList:
     for element in array:
         linked_list.append(element)
     return linked_list
-
-
-A = [2, 1, 7, 9, 5, 3, 0, 1]
-L = create_from_list(A)
-L.sort()
-print(L.values_to_list())

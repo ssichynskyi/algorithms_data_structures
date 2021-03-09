@@ -35,16 +35,16 @@ class IllegalListReversalAttempt(IllegalLinkedListOperation):
 class SinglyLinkedList:
     """Implements singly linked list
 
+    Args:
+        head: head node of the linked list
+
     ToDo:
         - add cycle length measurement (from the point where fast and slow
         markers met, restart the run. Number of iterations before they meet again
         is the length of the cycle
+
     """
     def __init__(self, head=None):
-        """
-        Args:
-            head: head node of the linked list
-        """
         if head and not isinstance(head, SinglyListNode):
             raise TypeError(f'Head must be of type SinglyListNode. Given: {type(head)}')
         self.head = head
@@ -137,6 +137,7 @@ class SinglyLinkedList:
         """
         if self.is_linked_list_cycled(self.head):
             raise IllegalListReversalAttempt("Cannot reverse the linked list")
+        self._tail = self.head
         current_node = self.head
         previous_node = None
         while current_node is not None:
@@ -144,7 +145,7 @@ class SinglyLinkedList:
             current_node.next = previous_node
             previous_node = current_node
             current_node = next_node
-        return previous_node
+        self.head = previous_node
 
     def reverse_with_stack(self) -> None:
         """Reverses singly linked list using stack
@@ -167,6 +168,7 @@ class SinglyLinkedList:
         """
         if self.is_linked_list_cycled(self.head):
             raise IllegalListReversalAttempt("Cannot reverse the linked list")
+        self._tail = self.head
         current = self.head
         stack = Stack()
         # put all elements to stack
@@ -180,7 +182,7 @@ class SinglyLinkedList:
             current = stack.pop()
             previous.next = current
         current.next = None
-        return new_head
+        self.head = new_head
 
     def values_to_list(self, start_node=None) -> list:
         """Puts all elements of a linked list into list in the same order
@@ -306,6 +308,9 @@ class SinglyLinkedList:
         else:
             preceding_node = self.get_node_by_position(position - 1)
             node.next = preceding_node.next
+            # update the tail node if this is a place to insert
+            if preceding_node.next is None:
+                self._tail = node
             preceding_node.next = node
 
     @staticmethod
@@ -331,7 +336,7 @@ class SinglyLinkedList:
         return slice_sub_array
 
     def replace(self, preceding_node, new_node) -> None:
-        """Replace the node which is next to preceding with node
+        """Replace the node which is next to preceding node
 
         Args:
             preceding_node: node that precedes the node which shall be replaced
@@ -426,8 +431,18 @@ class SinglyLinkedList:
             sub_list_length *= 2
 
 
-def create_from_list(array: list) -> SinglyLinkedList:
-    linked_list = SinglyLinkedList()
-    for element in array:
+def create_from_list(iterable, linked_list_class=SinglyLinkedList) -> SinglyLinkedList:
+    """Creates a linked list of a given type from the iterable
+
+    Args:
+        iterable: an iterable to create a linked list from
+        linked_list_class: the name linked list type that shall be created
+
+    Returns:
+        linked list of a given type linked_list_class
+
+    """
+    linked_list = linked_list_class()
+    for element in iterable:
         linked_list.append(element)
     return linked_list

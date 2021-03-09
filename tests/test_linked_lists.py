@@ -57,9 +57,9 @@ class Test(TestCase):
         test_sll.append('y')
         self.assertEqual('x', test_sll.head.value)
         self.assertEqual('y', test_sll.head.next.value)
-        # test_sll.reverse_with_stack()
-        # self.assertEqual('y', test_sll.head.value)
-        # self.assertEqual('x', test_sll.head.next.value)
+        test_sll.reverse()
+        self.assertEqual('y', test_sll.head.value)
+        self.assertEqual('x', test_sll.head.next.value)
 
     def test_singly_linked_list_length(self):
         test_sll = SinglyLinkedList()

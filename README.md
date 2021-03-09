@@ -22,6 +22,7 @@ A collection of custom implementation of common data-structures, algorithms, and
 ## Graphs
 
 ## Trees
+- binary heap sort
 
 ## Helper objects and methods:
 - generation of a random array

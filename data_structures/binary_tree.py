@@ -6,7 +6,7 @@ from data_structures.my_queue import Queue
 
 
 class BinaryTreeNode:
-    """Implementation of the binary tree node
+    """Implementation of the binary tree / binary tree node
 
     Idea:
         binary tree is a form of a tree data structure which node has only 2 children:
@@ -18,71 +18,103 @@ class BinaryTreeNode:
     """
 
     def __init__(self, root_obj):
-        self.key = root_obj
-        self.left_child = None
-        self.right_child = None
+        self._key = root_obj
+        self._left_child = None
+        self._right_child = None
 
-    def insert_left(self, new_node, decision_func=None) -> None:
+    @property
+    def key(self):
+        return self._key
+
+    @key.setter
+    def key(self, value):
+        self._key = value
+
+    @property
+    def left_child(self):
+        return self._left_child
+
+    @property
+    def right_child(self):
+        return self._right_child
+
+    def insert(self, new_node, rule) -> None:
+        """Add new node as a child using a rule
+
+        Idea:
+            inserts the node as a child using the rule(self, new_node)
+
+        Args:
+            new_node: tree node (a _key) to add
+            rule: function that determines if a new_node shall be a left or right child.
+            Result 0/False means left child, 1/True - right. Shall take 2 params:
+            - new node (new_node)
+            - root node (self)
+
+        Returns:
+            None
+
+        """
+        child = '_left_child' if rule(self, new_node) else '_right_child'
+
+        if getattr(self, child):
+            setattr(new_node, child, getattr(self, child))
+        setattr(self, child, new_node)
+
+    def insert_left(self, new_node) -> None:
         """Add new node as a left child
 
         Idea:
             inserts the node as a left child. If the node already has
-            left child, decide which child (left/right) it shall become using
-            decision_func.
+            left child, make it a left child of the new node
         Args:
-            new_node: tree node (a key) to add
-            decision_func: function which makes a decision if a new node shall
-            be a left or right child. Result 0/False means left child, 1/True - right.
-            If decision_func is None, left child is chosen.
-            Decision_func shall take 2 parameters, new_node and left child
+            new_node: tree node (a _key) to add
 
         Returns:
             None
 
         """
-        if self.left_child is None:
-            self.left_child = new_node
-        else:
-            tree_node = BinaryTreeNode(new_node)
-            if decision_func is None:
-                def decision_func(x, y): return 0
-        if decision_func(new_node, self.key):
-            tree_node.left_child = self.left_child
-        self.left_child = tree_node
+        self.insert(new_node, lambda root, new: False)
 
-    def insert_right(self, new_node, decision_func=None) -> None:
+    def insert_right(self, new_node) -> None:
         """Add new node as a right child
 
         Idea:
             inserts the node as a right child. If the node already has
-            right child, decide which child (left/right) it shall become using
-            decision_func.
+            right child, make it a right child of the new node
+
         Args:
-            new_node: tree node (a key) to add
-            decision_func: function which makes a decision if a new node shall
-            be a left or right child. Result 0/False means left child, 1/True - right.
-            If decision_func is None, right child is chosen.
-            Decision_func shall take 2 parameters, new_node and right child
+            new_node: tree node (a _key) to add
 
         Returns:
             None
 
         """
-        if self.right_child is None:
-            self.right_child = new_node
-        else:
-            tree = BinaryTreeNode(new_node)
-            tree.right_child = self.right_child
-            self.right_child = tree
+        self.insert(new_node, lambda root, new: False)
 
-    def get_left_child(self) -> object:
-        return self.left_child
 
-    def get_right_child(self) -> object:
-        return self.right_child
+def bst_rule(root_node, new_node) -> bool:
+    """A rule for a binary search tree"""
+    return False if new_node.key > root_node.key else True
 
-    def set_root_value(self, value) -> None:
-        self.key = value
 
-    def get_root_value(self) -> None:
-        return self.key
+def bin_heap_desc_rule(root_node, new_node) -> bool:
+    """A rule for a descending binary heap"""
+    if new_node.key > root_node.key:
+        raise ValueError('In descending binary heap the child node shall be not bigger than root')
+    return _bin_heap_rule(root_node)
+
+
+def bin_heap_asc_rule(root_node, new_node) -> bool:
+    """A rule for an ascending binary heap"""
+    if new_node.key > root_node.key:
+        raise ValueError('In ascending binary heap the child node shall be not smaller than root')
+    return _bin_heap_rule(root_node)
+
+
+def _bin_heap_rule(root_node) -> bool:
+    if not root_node.left_child:
+        return False
+    if not root_node.right_child:
+        return True
+    return False

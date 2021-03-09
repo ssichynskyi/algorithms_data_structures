@@ -90,7 +90,7 @@ class BinaryTreeNode:
             None
 
         """
-        self.insert(new_node, lambda root, new: False)
+        self.insert(new_node, lambda root, new: True)
 
 
 def bst_rule(root_node, new_node) -> bool:

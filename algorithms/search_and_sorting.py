@@ -153,7 +153,7 @@ def insertion_sort(array) -> None:
         # lower bound is -1 in order to reach 0th element
         # the faster alternative here is to implement a binary search to find the place to insert
         # it's also possible to improve execution time by starting from the higher bound in the upper
-        # loop because poping up last element has O(1) time complexity. Still overall time complexity
+        # loop because popping up last element has O(1) time complexity. Still overall time complexity
         # will remain O(n^2) because insertion time complexity is O(n)
         for k in range(unsorted_lower_bound, -1, -1):
             if array[i] > array[k]:
@@ -568,12 +568,12 @@ def heap_sort(array: list) -> None:
     max_index = len(array) - 1
     for i in range((max_index - 1) // 2, -1, -1):
         heapify(array, max_index, i)
-    """above: start from the latest node with leaves and proceed to root node"""
-
-    """At this stage array represents a binary heap. However it's not a sorted list yet.
+    """above: start from the latest node with leaves and proceed up to the root node.
+    
+    At this stage array represents a binary heap. However it's not a sorted list yet.
     Because bin heap doesn't provide any rule about left node < right node
     """
-    # Here final sorting is done
+
     """The idea of the loop below - to take the smallest element(root) put it to the end and
     heapify all elements from 0 to max_index - 1. Proceed until the last element.
     In this case all list is already sorted.

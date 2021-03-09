@@ -16,7 +16,7 @@ class Test(TestCase):
         self.assertEqual(SinglyLinkedList, type(test_sll))
         self.assertEqual(test_sll.head, None)
         with self.assertRaises(TypeError):
-            test_sll = SinglyLinkedList('abc')
+            SinglyLinkedList('abc')
 
     def test_singly_linked_list_append(self):
         test_sll = SinglyLinkedList()

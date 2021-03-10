@@ -92,6 +92,67 @@ class BinaryTreeNode:
         """
         self.insert(new_node, lambda root, new: True)
 
+    def inorder_traversal(self, node) -> list:
+        """Traverse the binary tree in-order
+
+        Note:
+            in-order means we visit and record left child, then root and then right child.
+            In-order traversal of BST will return a sorted list.
+
+        Args:
+            node: a tree node from which to start traversal
+
+        Returns:
+            A list of node values
+
+        """
+        result = []
+        if node:
+            result.extend(self.inorder_traversal(node.left))
+            result.append(node.key)
+            result.extend(self.inorder_traversal(node.right))
+        return result
+
+    def preorder_traversal(self, node) -> list:
+        """Traverse the binary tree pre-order
+
+        Note:
+            pre-order means we visit and record root, then left child and at last right child.
+
+        Args:
+            node: a tree node from which to start traversal
+
+        Returns:
+            A list of node values
+
+        """
+        result = []
+        if node:
+            result.append(node.key)
+            result.extend(self.inorder_traversal(node.left))
+            result.extend(self.inorder_traversal(node.right))
+        return result
+
+    def postorder_traversal(self, node) -> list:
+        """Traverse the binary tree post-order
+
+        Note:
+            post-order means we visit and record left child, then right child and at last root
+
+        Args:
+            node: a tree node from which to start traversal
+
+        Returns:
+            A list of node values
+
+        """
+        result = []
+        if node:
+            result.extend(self.inorder_traversal(node.left))
+            result.extend(self.inorder_traversal(node.right))
+            result.append(node.key)
+        return result
+
 
 def bst_rule(root_node, new_node) -> bool:
     """A rule for a binary search tree"""

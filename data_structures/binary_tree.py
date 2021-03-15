@@ -5,7 +5,7 @@ from data_structures.stack import Stack
 from data_structures.my_queue import Queue
 
 
-class BinaryTreeNode:
+class BinaryTree:
     """Implementation of the binary tree / binary tree node
 
     Idea:
@@ -152,6 +152,153 @@ class BinaryTreeNode:
             result.extend(self.inorder_traversal(node.right))
             result.append(node.key)
         return result
+
+
+class BinHeap:
+    """Implements binary heap tree
+
+    Idea:
+        binary heap is a binary tree where every child is
+        smaller (bigger) than it's parent
+
+    Args:
+         input_list: list from which BinHeap shall be build
+
+    """
+    def __init__(self, input_list=[]):
+        self._heap_list = input_list
+        # number of nodes in the tree
+        self._size = len(input_list)
+
+    @property
+    def heap_list(self):
+        return self._heap_list
+
+    @property
+    def size(self):
+        return self._size
+
+    def build_heap(self, input_list: list) -> None:
+        """Rewrites binary heap with a one made from a given list.
+
+        Note:
+            Unlike constructor method, it accepts normal list
+            and sorts it out as a heap.
+        Args:
+            input_list: unordered list
+
+        Returns:
+            None. Updates existing bin heap
+        """
+        # apply perc_up() starting from  the last node with leaves
+        self._size = len(input_list)
+        self._heap_list = input_list
+        max_index = len(self._heap_list) - 1
+        for i in range((max_index - 1) // 2, -1, -1):
+            self._perc_down(self._heap_list, max_index, i)
+        """above: start from the latest node with leaves and proceed up to root node."""
+
+    def _perc_down(self, array: list, max_index: int, i: int) -> None:
+        """Push element through the entire path to the max_index
+
+        Note:
+            In a python module heapq there's a full implementation of related functions.
+            So, this is implemented to get better understanding
+
+        Args:
+            array: array to heapify
+            max_index: maximal index of the array that shall be heapified
+            i: the starting index (index of a root element, e.g. starting point)
+
+        Returns:
+            None, changes are done in a provided array parameter
+
+        """
+        left_index = 2 * i + 1
+        right_index = 2 * i + 2
+        index_of_min = i
+        if left_index <= max_index and array[left_index] > array[index_of_min]:
+            index_of_min = left_index
+        if right_index <= max_index and array[right_index] > array[index_of_min]:
+            index_of_min = right_index
+        """code above discovers the node which has min value within root, left node, right node"""
+        if index_of_min != i:
+            array[index_of_min], array[i] = array[i], array[index_of_min]
+            """perform similar operation recursively for all children of the moved node"""
+            self.heapify(array, max_index, index_of_min)
+
+    # def perc_up(self, i) -> None:
+    #     """Push element through the entire path to the root
+    #
+    #     Note:
+    #         method will update the entire branch.
+    #         The process is started from the last node with at least one leave
+    #     Args:
+    #         i: index of the element
+    #
+    #     Returns:
+    #         None
+    #
+    #     """
+    #     while i // 2 > 0:
+    #         if self._heap_list[i] < self._heap_list[i // 2]:
+    #             self._heap_list[i], self._heap_list[i // 2] = self._heap_list[i // 2], self._heap_list[i]
+    #         i //= 2
+
+    # def insert(self, value) -> None:
+    #     """Inserts the element to it's place
+    #
+    #     Note:
+    #         Inserts the element to the end of the list and
+    #         propagates it until the next up to the root node
+    #
+    #     Args:
+    #         value: value of the inserted element
+    #
+    #     Returns:
+    #         None
+    #
+    #     """
+    #     self.heap_list.append(value)
+    #     self.size += 1
+    #     self.perc_up(self.size)
+
+    def perc_down(self, i) -> None:
+        """
+        Push element down to the leaves through the entire path and updates the branch
+        :param i: index of the element to push
+        :return: None
+        """
+        while i < self.size:
+            min_child_index = self.min_child(i)
+            if self.heap_list[i] > self.heap_list[min_child_index]:
+                self.heap_list[i], self.heap_list[min_child_index] = self.heap_list[min_child_index], self.heap_list[i]
+            i = min_child_index
+
+    def min_child(self, i) -> int:
+        """
+        Get child with minimal value of the i-th node
+        :param i: index of the node to address
+        :return: the index of the child node with a minimal value
+        """
+        if 2 * i + 1 > self.size:
+            return 2 * i
+        return 2 * i if self.heap_list[2 * i] < self.heap_list[2 * i + 1] else 2 * i + 1
+
+    def del_root(self):
+        """
+        Also del_min() as our root is a node with a minimum.
+        Crucial part of this operation is to get new root and restore the heap order.
+        This is done in a following way: we push last node to a root position and then
+        push it down using perc_down() method
+        :return: the value of the removed node
+        """
+        min_node = self.heap_list[1]
+        self.heap_list[1] = self.heap_list[-1]
+        self.heap_list.pop()
+        self.size -= 1
+        self.perc_down(1)
+        return min_node
 
 
 def bst_rule(root_node, new_node) -> bool:

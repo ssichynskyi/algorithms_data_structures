@@ -133,3 +133,4 @@ dmypy.json
 
 # Special case for this project
 experiments.py
+examples/

@@ -299,6 +299,59 @@ def merge_sort(array):
             k += 1
 
 
+def merge_sort_multi_adapted(array):
+    """Variation of merge sort adapted for multi-processing
+
+    Args:
+        array: list to sort
+
+    Returns:
+        sorted list
+    """
+    if len(array) <= 1:
+        return array
+    else:
+        mid = len(array) // 2
+    left_array = merge_sort_multi_adapted(array[:mid])
+    right_array = merge_sort_multi_adapted(array[mid:])
+    return merge(left_array, right_array)
+
+
+def merge(left_array, right_array):
+    """Merge two sorted lists into one sorted list
+
+    Note:
+        this function is a helper method for merge sort.
+        It doesn't work correctly with unsorted input params.
+        Implemented as a public function because of usage in
+        multiprocess modification of a merge sort.
+
+    Args:
+        left_array: sorted list
+        right_array: sorted list
+
+    Returns:
+        sorted list which consists of all elements passed as parameters
+
+    """
+    i, j = 0, 0
+    result = []
+    while True:
+        if i >= len(left_array):
+            result.extend(right_array[j:])
+            break
+        if j >= len(right_array):
+            result.extend(left_array[i:])
+            break
+        if left_array[i] <= right_array[j]:
+            result.append(left_array[i])
+            i += 1
+        else:
+            result.append(right_array[j])
+            j += 1
+    return result
+
+
 def quick_sort(array, start=None, stop=None):
     """Implements quick sort algorithm.
 

@@ -12,7 +12,8 @@ from algorithms.search_and_sorting import (
     merge_sort,
     counting_sort,
     radix_sort,
-    heap_sort
+    heap_sort,
+    merge_sort_multi_adapted
 )
 
 
@@ -34,7 +35,8 @@ class Test(TestCase):
             merge_sort,
             counting_sort,
             radix_sort,
-            heap_sort
+            heap_sort,
+            merge_sort_multi_adapted
         )
 
     def test_bubble_sort(self):
@@ -64,10 +66,19 @@ class Test(TestCase):
     def test_heap_sort(self):
         self.generic_test(heap_sort)
 
+    def test_merge_sort_multi(self):
+        self.special_test_for_value_return(merge_sort_multi_adapted)
+
     def generic_test(self, func):
         for array in self.test_set:
             test_array = array.copy()
             func(test_array)
+            self.assertTrue(check_array_sorted(test_array))
+
+    def special_test_for_value_return(self, func):
+        for array in self.test_set:
+            test_array = array.copy()
+            test_array = func(test_array)
             self.assertTrue(check_array_sorted(test_array))
 
     def test_performance(self):

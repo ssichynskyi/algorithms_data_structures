@@ -1,4 +1,5 @@
 import concurrent.futures as concurrent_futures
+from threading import Lock
 
 from algorithms.search_and_sorting import (
     heap_sort,
@@ -24,10 +25,12 @@ def compete():
     def run(func, args):
         nonlocal number
         func(args)
-        print(f'Sorting function {func.__name__} comes on place {number}')
-        number += 1
+        with lock:
+            print(f'Sorting function {func.__name__} comes on place {number}')
+            number += 1
 
     number = 1
+    lock = Lock()
     performance_test_array = get_random_array_of_ints(100000, -10000, 10000)
     test_array_pool = [performance_test_array.copy() for _ in range(len(sorting_functions))]
     with concurrent_futures.ThreadPoolExecutor() as executor:

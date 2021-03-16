@@ -50,7 +50,10 @@ def get_execution_time(func, *args, time_measurement_function=time.perf_counter_
 def compare_functions(data, check_function, *functions):
     """Runs all functions given in *functions on the same data
 
-    It is important that all functions have the same signature
+    It is important that all functions have the same signature.
+    Verification of the result is done using check_function and
+    returns of the functions if they return value or their data copy if not.
+    If check function is None, Verification value is set "not verified"
 
     Args:
         data: data on which functions shall be run
@@ -62,15 +65,17 @@ def compare_functions(data, check_function, *functions):
         a dict containing the verification result by check function and
         time, required for the execution of every function on given data
         Example:
-            {'get_max': {'Verification': True, 'time ms': 1248732}
+            {'get_max': {'Verification': True, 'time ms': 1248732}}
 
     """
+    if check_function is None:
+        def check_function(any_arg): return 'Not verified'
     results = dict()
     for function in functions:
         local_data = data.copy()
-        _, exec_time = get_execution_time(function, local_data)
+        return_value, exec_time = get_execution_time(function, local_data)
         results[function.__name__] = {
-            'Verification': check_function(local_data),
+            'Verification': check_function(local_data) if return_value is None else check_function(return_value),
             'time ms': exec_time / 1e+6
         }
     return results

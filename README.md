@@ -28,3 +28,7 @@ A collection of custom implementation of common data-structures, algorithms, and
 - generation of a random array
 - execution time measure tools
 - verifier for sorting algorithms
+
+## Concurrency and Parallelism
+- sorting competition using multithreading
+- merge sort with multiprocessing

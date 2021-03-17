@@ -33,7 +33,7 @@ def compete():
     lock = Lock()
     performance_test_array = get_random_array_of_ints(100000, -10000, 10000)
     test_array_pool = [performance_test_array.copy() for _ in range(len(sorting_functions))]
-    with concurrent_futures.ThreadPoolExecutor() as executor:
+    with concurrent_futures.ThreadPoolExecutor(max_workers=len(sorting_functions)) as executor:
         sorted_list_futures = [
             executor.submit(run, sorting_functions[i], test_array_pool[i]) for i in range(len(sorting_functions))
         ]

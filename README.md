@@ -7,6 +7,7 @@ A collection of custom implementation of common data-structures, algorithms, and
 - check if given string contains only unique characters
 - various sorting algorithms: shell, merge, quick, heap, insertion, selection, bubble
 - find missing array element (array and it's shuffled copy with one element missing)
+- get smallest pos integer not in array
 
 ## Stacks and Queues
 - stack with O(1) time to get max value

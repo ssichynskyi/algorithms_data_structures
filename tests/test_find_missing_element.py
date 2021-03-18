@@ -1,4 +1,3 @@
-from random import shuffle
 from unittest import TestCase
 
 from find_missing_element import (

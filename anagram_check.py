@@ -154,7 +154,7 @@ def is_anagram_two(first: str, second: str) -> bool:
 
 
 def is_anagram_three(first: str, second: str) -> bool:
-    """ Second variant of solution if two strings are anagrams.
+    """ Third variant of solution if two strings are anagrams.
     Counting symbols while hashing them
 
     Args:

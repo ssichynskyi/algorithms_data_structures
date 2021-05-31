@@ -1,12 +1,9 @@
 #!usr/bin/python
 # -*- coding: utf-8 -*-
 
-from data_structures.stack import Stack
-from data_structures.my_queue import Queue
-
 
 class BinaryTree:
-    """Implementation of the binary tree / binary tree node
+    """Implementation of the binary tree / binary tree node.
 
     Idea:
         binary tree is a form of a tree data structure which node has only 2 children:
@@ -39,7 +36,7 @@ class BinaryTree:
         return self._right_child
 
     def insert(self, new_node, rule) -> None:
-        """Add new node as a child using a rule
+        """Add new node as a child using a rule.
 
         Idea:
             inserts the node as a child using the rule(self, new_node)
@@ -62,7 +59,7 @@ class BinaryTree:
         setattr(self, child, new_node)
 
     def insert_left(self, new_node) -> None:
-        """Add new node as a left child
+        """Add new node as a left child.
 
         Idea:
             inserts the node as a left child. If the node already has
@@ -77,7 +74,7 @@ class BinaryTree:
         self.insert(new_node, lambda root, new: False)
 
     def insert_right(self, new_node) -> None:
-        """Add new node as a right child
+        """Add new node as a right child.
 
         Idea:
             inserts the node as a right child. If the node already has
@@ -93,7 +90,7 @@ class BinaryTree:
         self.insert(new_node, lambda root, new: True)
 
     def inorder_traversal(self, node) -> list:
-        """Traverse the binary tree in-order
+        """Traverse the binary tree in-order.
 
         Note:
             in-order means we visit and record left child, then root and then right child.
@@ -114,7 +111,7 @@ class BinaryTree:
         return result
 
     def preorder_traversal(self, node) -> list:
-        """Traverse the binary tree pre-order
+        """Traverse the binary tree pre-order.
 
         Note:
             pre-order means we visit and record root, then left child and at last right child.
@@ -134,7 +131,7 @@ class BinaryTree:
         return result
 
     def postorder_traversal(self, node) -> list:
-        """Traverse the binary tree post-order
+        """Traverse the binary tree post-order.
 
         Note:
             post-order means we visit and record left child, then right child and at last root
@@ -155,7 +152,7 @@ class BinaryTree:
 
 
 class BinHeap:
-    """Implements binary heap tree
+    """Implements binary heap tree.
 
     Idea:
         binary heap is a binary tree where every child is
@@ -165,7 +162,9 @@ class BinHeap:
          input_list: list from which BinHeap shall be build
 
     """
-    def __init__(self, input_list=[]):
+    def __init__(self, input_list=None):
+        if input_list is None:
+            input_list = list()
         self._heap_list = input_list
         # number of nodes in the tree
         self._size = len(input_list)
@@ -189,6 +188,7 @@ class BinHeap:
 
         Returns:
             None. Updates existing bin heap
+
         """
         # apply perc_up() starting from  the last node with leaves
         self._size = len(input_list)
@@ -199,7 +199,7 @@ class BinHeap:
         """above: start from the latest node with leaves and proceed up to root node."""
 
     def _perc_down(self, array: list, max_index: int, i: int) -> None:
-        """Push element through the entire path to the max_index
+        """Push element through the entire path to the max_index.
 
         Note:
             In a python module heapq there's a full implementation of related functions.
@@ -296,7 +296,7 @@ class BinHeap:
         min_node = self.heap_list[1]
         self.heap_list[1] = self.heap_list[-1]
         self.heap_list.pop()
-        self.size -= 1
+        self._size -= 1
         self.perc_down(1)
         return min_node
 

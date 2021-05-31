@@ -14,7 +14,7 @@ Problem:
 Example:
     Input:
     finder([1,2,3,4,5,6,7],[3,7,2,1,4,6]) #number 5 was removed after shuffling
-    
+
     Output:
     5 is the missing number
 

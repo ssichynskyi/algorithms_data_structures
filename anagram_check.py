@@ -13,7 +13,7 @@ Problem:
 Example:
     "public relations" is an anagram of "crap built on lies"
     "clint eastwood" is an anagram of "old west action"
-    
+
 Usage:
     python anagram_check.py <first string> <second string> <number of solution to run>
     e.g.:
@@ -72,7 +72,7 @@ def _prepare_strings(*strings) -> Tuple[str]:
     """
     result = []
     for string in strings:
-        if type(string) != str:
+        if not isinstance(string, str):
             raise TypeError('One of the given parameters is not of a string-type')
         string = string.replace(' ', '').lower()
         if len(string) == 0:

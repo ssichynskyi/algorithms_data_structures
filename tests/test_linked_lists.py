@@ -7,8 +7,8 @@ class Test(TestCase):
         array = [2, 1, 'a']
         test_sll = create_from_list(array)
         node = test_sll.head
-        for i in range(0, len(array)):
-            self.assertEqual(array[i], node.value)
+        for _, array_value in enumerate(array):
+            self.assertEqual(array_value, node.value)
             node = node.next
 
     def test_singly_linked_list_init(self):

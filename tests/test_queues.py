@@ -4,6 +4,7 @@ from data_structures.my_queue import QueueConstTimeMaxEl, IllegalDequeueAttemptE
 from helpers.execution_timer import get_execution_time
 from helpers.randomized_arrays import get_random_array_of_ints
 
+
 class TestQueueConstTimeMaxEl(TestCase):
 
     def test_enqueue_and_size(self):
@@ -71,8 +72,8 @@ class TestQueueConstTimeMaxEl(TestCase):
         q = QueueConstTimeMaxEl()
         for element in get_random_array_of_ints(100000, -10000, 10000):
             q.enqueue(element)
-        result, time_hundred_thousand = get_execution_time(q.get_max)
+        _, time_hundred_thousand = get_execution_time(q.get_max)
         for element in get_random_array_of_ints(100, -10000, 10000):
             q.enqueue(element)
-        result, time_hundred = get_execution_time(q.get_max)
+        _, time_hundred = get_execution_time(q.get_max)
         self.assertTrue(time_hundred_thousand/time_hundred < 30.0)

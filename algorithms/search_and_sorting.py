@@ -5,11 +5,9 @@ from typing import Union
 
 
 class NonIntegerElementInCountingSort(Exception):
-    """ Exception is raised when counting sort is attempted on
-    array containing other values than integers
-    """
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+    """Exception raised when counting sort is tried on non-integer element"""
+    def __init__(self, *args):
+        Exception.__init__(self, *args)
 
 
 def binary_search(sorted_list: list, searched_item) -> Union[int, None]:
@@ -38,7 +36,7 @@ def binary_search(sorted_list: list, searched_item) -> Union[int, None]:
 
 
 def binary_search_recursive(sorted_list, searched_item, lower=None, upper=None) -> Union[int, None]:
-    """Performs binary search in a given sorted list using recursion
+    """Performs binary search in a given sorted list using recursion.
 
     Args:
         sorted_list: a sorted list to look into
@@ -66,7 +64,7 @@ def binary_search_recursive(sorted_list, searched_item, lower=None, upper=None) 
 
 
 def bubble_sort(array) -> None:
-    """Implements the bubble sorting algorithm
+    """Implements the bubble sorting algorithm.
 
     Note:
         This is ineffective O(n^2) sorting algorithm. O(1) by space
@@ -121,7 +119,7 @@ def selection_sort(array) -> None:
 
 
 def insertion_sort(array) -> None:
-    """Implements the insertion sorting algorithm
+    """Implements the insertion sorting algorithm.
 
     Idea:
         Most left (right) side of the list is considered as already sorted list
@@ -210,7 +208,7 @@ def shell_sort(array: list) -> None:
         for i in range(0, distance):
             """create a virtual sub-array which members have equal distance from one another
             and sort them using the principle of insertion sort (left part considered sorted).
-            Here i is a counter for these virtual sub-arrays 
+            Here i is a counter for these virtual sub-arrays
             """
             for j in range(i + distance, max_index + 1, distance):
                 """i + distance - is an index of a second element in virtual sub-array
@@ -463,22 +461,22 @@ def counting_sort(array):
                 raise NonIntegerElementInCountingSort(
                     'Counting sort cannot perform on non-integer values'
                 )
-    """collect elements into two arrays according to their sign. 0 is considered as positive"""
+    """collect elements into two arrays according to their sign. 0 is considered as positive."""
 
     current_index = 0
     for i in range(len(array_of_negatives) - 1, -1, -1):
-        for j in range(array_of_negatives[i]):
+        for _ in range(array_of_negatives[i]):
             array[current_index] = -i
             current_index += 1
     for i in range(len(array_of_positives)):
-        for j in range(array_of_positives[i]):
+        for _ in range(array_of_positives[i]):
             array[current_index] = i
             current_index += 1
-    """above for loops reconstructs the array that is already sorted"""
+    """above for loops reconstructs the array that is already sorted."""
 
 
 def radix_sort(array: list, max_rank=None, current_rank=None):
-    """Implements radix / bucket sorting algorithm
+    """Implements radix / bucket sorting algorithm.
 
     Idea:
         elements are put into buckets according to the value of their
@@ -519,14 +517,14 @@ def radix_sort(array: list, max_rank=None, current_rank=None):
             rank_of_max = int(log10(-max_value))
         else:
             rank_of_max = 1
-        """get rank / number of digits in max. element of the array"""
+        """get rank / number of digits in max. element of the array."""
         if min_value > 0:
             rank_of_min = int(log10(min_value))
         elif min_value < 0:
             rank_of_min = int(log10(-min_value))
         else:
             rank_of_min = 1
-        """get rank / number of digits in min. element of the array"""
+        """get rank / number of digits in min. element of the array."""
         max_rank = max(rank_of_min, rank_of_max)
 
     # Code below is executed only on initial iteration
@@ -561,7 +559,7 @@ def radix_sort(array: list, max_rank=None, current_rank=None):
 
 
 def heap_sort(array: list) -> None:
-    """Sorts the array using a binary heap (prioritized queue)
+    """Sorts the array using a binary heap (prioritized queue).
 
     Note:
         binary heap is a complete binary tree (filled with no spaces),

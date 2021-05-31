@@ -1,4 +1,5 @@
 import concurrent.futures as concurrent_futures
+
 from threading import Lock
 
 from algorithms.search_and_sorting import (

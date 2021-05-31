@@ -69,7 +69,7 @@ def compare_functions(data, check_function, *functions):
 
     """
     if check_function is None:
-        def check_function(any_arg): return 'Not verified'
+        def check_function(*any_args): return 'Not verified'
     results = dict()
     for function in functions:
         local_data = data.copy()

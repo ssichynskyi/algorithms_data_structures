@@ -1,16 +1,16 @@
 """Challenge: given a json string, which represents a list of goods
+
 with every good is a dict with keys "name" and "price", sort it in
 the following way:
 - main sorting criterion is price, ASC
 - if prices are equal, sort goods using their name in alphabetical order
-
 """
 
 import json
 
 
 def sort_by_price_ascending(json_string):
-    """Solution using sorting function with key"""
+    """Solution using sorting function with key."""
     goods_list = json.loads(json_string)
     # first sort using secondary criterion
     goods_list.sort(key=lambda good: good['name'])

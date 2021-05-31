@@ -77,8 +77,8 @@ class TestStackConstTimeMaxEl(TestCase):
         test_stack = StackConstTimeMaxEl()
         for element in get_random_array_of_ints(100000, -10000, 10000):
             test_stack.push(element)
-        result, time_hundred_thousand = get_execution_time(test_stack.get_max)
+        _, time_hundred_thousand = get_execution_time(test_stack.get_max)
         for element in get_random_array_of_ints(100, -10000, 10000):
             test_stack.push(element)
-        result, time_hundred = get_execution_time(test_stack.get_max)
+        _, time_hundred = get_execution_time(test_stack.get_max)
         self.assertTrue(time_hundred_thousand/time_hundred < 30.0)

@@ -40,13 +40,13 @@ class Test(TestCase):
     def test_performance(self):
         perf_test_array_1 = sorted(get_random_array_of_ints(100, -10000, 10000))
         perf_test_array_2 = sorted(get_random_array_of_ints(100, -10000, 10000))
-        result, time_logn_1 = get_execution_time(
+        _, time_logn_1 = get_execution_time(
             find_median_of_two_sorted_lists,
             perf_test_array_1, perf_test_array_2
         )
         perf_test_array_1 = sorted(get_random_array_of_ints(1000000, -100000, 100000))
         perf_test_array_2 = sorted(get_random_array_of_ints(1000000, -100000, 100000))
-        result, time_logn_2 = get_execution_time(
+        _, time_logn_2 = get_execution_time(
             find_median_of_two_sorted_lists,
             perf_test_array_1, perf_test_array_2
         )
@@ -59,7 +59,7 @@ class Test(TestCase):
         self.assertEqual(3.0, median([-1, 2, 4, 10]))
         with self.assertRaises(ValueError):
             median([])
-            median()
+            median(None)
 
     def test_my_list(self):
         test_my_list = MyList(-2, 3, [1, 2])

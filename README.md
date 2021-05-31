@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5bc87a8c8af94f77898aa097f339f046)](https://www.codacy.com/gh/ssichynskyi/algorithms_data_structures/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ssichynskyi/algorithms_data_structures&amp;utm_campaign=Badge_Grade)
+
 # Algorithms and Data Structures
 A collection of custom implementation of common data-structures, algorithms, and various related tasks
 
@@ -15,17 +17,17 @@ A collection of custom implementation of common data-structures, algorithms, and
 - queue from 2 stacks
 - check parenthesis for balance
 
-## Lined lists:
+## Lined lists
 - singly linked list
 - doubly linked list
 - merge sort for SLL
 
-## Graphs
-
 ## Trees
 - binary heap sort
 
-## Helper objects and methods:
+## Graphs
+
+## Helper objects and methods
 - generation of a random array
 - execution time measure tools
 - verifier for sorting algorithms

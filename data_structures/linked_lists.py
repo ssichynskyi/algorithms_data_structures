@@ -5,6 +5,16 @@
 from data_structures.stack import Stack
 
 
+class IllegalLinkedListOperation(Exception):
+    """General exception for illegal operations with linked lists."""
+    pass
+
+
+class IllegalListReversalAttempt(IllegalLinkedListOperation):
+    """Exception raised when list reversal is not possible but called."""
+    pass
+
+
 class SinglyListNode:
     """Node for a singly linked list"""
     def __init__(self, value):
@@ -19,21 +29,8 @@ class DoublyLinkedListNode(SinglyListNode):
         self.prev = None
 
 
-class IllegalLinkedListOperation(Exception):
-    """General exception for illegal operations with linked lists"""
-    def __init__(self, *args):
-        Exception.__init__(self, *args)
-
-
-class IllegalListReversalAttempt(IllegalLinkedListOperation):
-    """"""
-    def __init__(self, message, *args):
-        super.__init__(*args)
-        self.message = message
-
-
 class SinglyLinkedList:
-    """Implements singly linked list
+    """Implements singly linked list.
 
     Args:
         head: head node of the linked list
@@ -52,13 +49,13 @@ class SinglyLinkedList:
 
     @property
     def tail(self):
-        """Tail node of the linked list"""
+        """Tail node of the linked list."""
         if not self._tail:
             self.is_linked_list_cycled(self.head)
         return self._tail
 
     def push(self, value) -> None:
-        """Add new node to the linked list and updates the head
+        """Add new node to the linked list and updates the head.
 
         Args:
             value: value of the node that has to be added
@@ -72,7 +69,7 @@ class SinglyLinkedList:
         self.head = node
 
     def append(self, value) -> None:
-        """Add new node to the tail of the list
+        """Add new node to the tail of the list.
 
         Args:
             value: value of the node that has to be added
@@ -92,7 +89,7 @@ class SinglyLinkedList:
             self._tail = node
 
     def is_linked_list_cycled(self, start_node=None) -> bool:
-        """Determine if a given singly linked list has cycles
+        """Determine if a given singly linked list has cycles.
 
         Note:
             A cycle is when a node's next actually points back to one of
@@ -126,7 +123,7 @@ class SinglyLinkedList:
         return False
 
     def reverse(self) -> None:
-        """Reverses singly linked list
+        """Reverses singly linked list.
 
         Returns:
             None, all changes done in linked list
@@ -148,7 +145,7 @@ class SinglyLinkedList:
         self.head = previous_node
 
     def reverse_with_stack(self) -> None:
-        """Reverses singly linked list using stack
+        """Reverses singly linked list using stack.
 
         Idea:
             Stack reverses the order of the elements.
@@ -185,7 +182,7 @@ class SinglyLinkedList:
         self.head = new_head
 
     def values_to_list(self, start_node=None) -> list:
-        """Puts all elements of a linked list into list in the same order
+        """Puts all elements of a linked list into list in the same order.
 
         Args:
             start_node: node of a singly linked list to start from
@@ -208,7 +205,7 @@ class SinglyLinkedList:
         return output_list
 
     def get_length(self, start_node=None) -> int:
-        """Determine the length of the list
+        """Determine the length of the list.
 
         Args:
             start_node: node from which the counting shall start
@@ -230,7 +227,7 @@ class SinglyLinkedList:
         return counter
 
     def get_node_by_position(self, position: int) -> [SinglyListNode, None]:
-        """Get the node which is positioned "position" times next to head node
+        """Get the node which is positioned "position" times next to head node.
 
         Args:
             position: number of nodes from head to the requested one. 0 is head.
@@ -253,7 +250,7 @@ class SinglyLinkedList:
         return current_node
 
     def get_node_by_position_reversed(self, position: int) -> [SinglyListNode, None]:
-        """Get the node which is positioned "position" times from the tail node
+        """Get the node which is positioned "position" times from the tail node.
 
         Args:
             position: number of nodes from tail to the requested one. 0 is tail.
@@ -278,7 +275,7 @@ class SinglyLinkedList:
         return trailing_pointer
 
     def insert_on_position(self, value, position: int) -> None:
-        """Creates a node with given value and puts it "position" times to the right of head
+        """Creates a node with given value and puts it "position" times to the right of head.
 
         Args:
             value: the value of the node to be inserted
@@ -315,7 +312,7 @@ class SinglyLinkedList:
 
     @staticmethod
     def slice(start, positions):
-        """Creates a new linked list which is a slice of
+        """Creates a new linked list which is a slice of.
 
         Args:
             start: starting node
@@ -336,7 +333,7 @@ class SinglyLinkedList:
         return slice_sub_array
 
     def replace(self, preceding_node, new_node) -> None:
-        """Replace the node which is next to preceding node
+        """Replace the node which is next to preceding node.
 
         Args:
             preceding_node: node that precedes the node which shall be replaced
@@ -355,7 +352,7 @@ class SinglyLinkedList:
         new_node.next = node_to_replace.next
 
     def sort(self) -> None:
-        """Use iterative merge sort algorithm to order the elements by value
+        """Use iterative merge sort algorithm to order the elements by value.
 
         Returns:
             None
@@ -432,7 +429,7 @@ class SinglyLinkedList:
 
 
 def create_from_list(iterable, linked_list_class=SinglyLinkedList) -> SinglyLinkedList:
-    """Creates a linked list of a given type from the iterable
+    """Creates a linked list of a given type from the iterable.
 
     Args:
         iterable: an iterable to create a linked list from
